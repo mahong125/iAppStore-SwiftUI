@@ -10,6 +10,7 @@ import SwiftUI
 
 enum AppDetailAlertType: Identifiable {
     case copyBundleId
+    case copyAppID
     
     var id: Int { hashValue }
 }
@@ -49,6 +50,9 @@ struct AppDetailContentView: View {
                 case .copyBundleId:
                     UIPasteboard.general.setValue(appModel.app?.bundleId ?? "", forPasteboardType: "public.plain-text")
                     return Alert(title: Text("提示"), message: Text("包名内容复制成功！"), dismissButton: .default(Text("OK")))
+                case .copyAppID:
+                    UIPasteboard.general.setValue(String(appModel.app?.trackId ?? 0), forPasteboardType: "public.plain-text")
+                    return Alert(title: Text("提示"), message: Text("App ID 内容复制成功！"), dismissButton: .default(Text("OK")))
                 }
             }
         }
@@ -124,7 +128,20 @@ struct AppDetailHeaderView: View {
                     AppDetailTextView(key: "价格", value: appModel.app?.formattedPrice ?? "")
                     AppDetailTextView(key: "分级", value: appModel.app?.contentAdvisoryRating ?? "")
                     AppDetailTextView(key: "分类", value: (appModel.app?.genres ?? []).joined(separator: ","))
-                    AppDetailTextView(key: "App ID", value: String(appModel.app?.trackId ?? 0))
+//                    AppDetailTextView(key: "App ID", value: String(appModel.app?.trackId ?? 0))
+                    
+                    HStack {
+                        Text("App ID").font(.subheadline)
+                        if #available(iOS 15.0, *) {
+                            Button(String(appModel.app?.trackId ?? 0)) {
+                                alertType = .copyAppID
+                            }.buttonStyle(.bordered)
+                        } else {
+                            Button(String(appModel.app?.trackId ?? 0)) {
+                                alertType = .copyAppID
+                            }
+                        }
+                    }
                     
                     HStack {
                         Text("包名").font(.subheadline)
