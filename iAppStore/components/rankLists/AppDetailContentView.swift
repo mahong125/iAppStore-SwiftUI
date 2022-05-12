@@ -48,10 +48,12 @@ struct AppDetailContentView: View {
             .alert(item: $alertType) { type in
                 switch type {
                 case .copyBundleId:
-                    UIPasteboard.general.setValue(appModel.app?.bundleId ?? "", forPasteboardType: "public.plain-text")
+//                    UIPasteboard.general.setValue(appModel.app?.bundleId ?? "", forPasteboardType: "public.plain-text")
+                    UIPasteboard.general.string = appModel.app?.bundleId ?? ""
                     return Alert(title: Text("提示"), message: Text("包名内容复制成功！"), dismissButton: .default(Text("OK")))
                 case .copyAppID:
-                    UIPasteboard.general.setValue(String(appModel.app?.trackId ?? 0), forPasteboardType: "public.plain-text")
+//                    UIPasteboard.general.setValue(String(appModel.app?.trackId ?? 0), forPasteboardType: "public.plain-text")
+                    UIPasteboard.general.string = String(appModel.app?.trackId ?? 0)
                     return Alert(title: Text("提示"), message: Text("App ID 内容复制成功！"), dismissButton: .default(Text("OK")))
                 }
             }
